@@ -1,0 +1,26 @@
+# Node.js
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Environment
+.env
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+bower_components/
+jspm_packages/
+
+# Optional: Output of npm pack
+*.tgz
+
+# Optional: Yarn Integrity file
+.yarn-integrity
