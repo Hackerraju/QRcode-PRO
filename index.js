@@ -90,8 +90,7 @@ app.post("/generate", async (req, res) => {
       width,
       colorDark,
       colorLight,
-      availableAt,
-      bgColor,
+      bgColor, // Fix: use bgColor instead of availableAt
       widgetSize,
       textInside,
       filename,
