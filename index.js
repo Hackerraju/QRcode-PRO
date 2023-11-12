@@ -3,10 +3,11 @@ const qrCode = require("qrcode");
 const path = require("path");
 const mongoose = require("mongoose");
 const { promisify } = require("util");
-require("dotenv").config(); // Load environment variables from .env file
+require("dotenv").config();
 
 const app = express();
-const port = process.env.PORT || 3000; // Use the PORT environment variable or default to 3000
+const port = process.env.PORT || 3000;
+const hostUrl = process.env.HOSTURL || `http://localhost:${port}`;
 
 app.use(express.json());
 
@@ -18,6 +19,7 @@ mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
 const db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
@@ -102,7 +104,7 @@ app.post("/generate", async (req, res) => {
       id: savedQRCode._id,
       filename,
       createdAt: savedQRCode.createdAt,
-      availableAt: `http://localhost:${port}/qrcodes/${filename}`,
+      availableAt: `${hostUrl}${port}/qrcodes/${qrCodeData.filename}`,
       textInside,
       height,
       width,
@@ -135,7 +137,7 @@ app.get("/qrcodes/all", async (req, res) => {
         id: qrCodeData._id,
         filename: qrCodeData.filename,
         createdAt: qrCodeData.createdAt,
-        availableAt: `http://localhost:${port}/qrcodes/${qrCodeData.filename}`,
+        availableAt: `${hostUrl}${port}/qrcodes/${qrCodeData.filename}`,
         textInside: qrCodeData.textInside,
         height: qrCodeData.height,
         width: qrCodeData.width,
@@ -169,7 +171,7 @@ app.get("/qrcodes/byId/:id", async (req, res) => {
       id: qrCodeData._id,
       filename: qrCodeData.filename,
       createdAt: qrCodeData.createdAt,
-      availableAt: `http://localhost:${port}/qrcodes/${qrCodeData.filename}`,
+      availableAt: `${hostUrl}${port}/qrcodes/${qrCodeData.filename}`,
       textInside: qrCodeData.textInside,
       height: qrCodeData.height,
       width: qrCodeData.width,
@@ -187,5 +189,5 @@ app.get("/qrcodes/byId/:id", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server is running on Port: ${port}`);
+  console.log(`Server is running on ${hostUrl}`);
 });
